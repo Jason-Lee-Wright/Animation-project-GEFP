@@ -2,18 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanScrollWheal : MonoBehaviour
+public class HumanScrollWheel : MonoBehaviour
 {
     Animator Human;
-    // Start is called before the first frame update
+
+    [SerializeField]
+    float MoveSpeed = 0;
+
+    [SerializeField]
+    float speedMultiplier = 0.1f;
+
     void Start()
     {
         Human = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        float scrollInput = Input.mouseScrollDelta.y;
+        MoveSpeed += scrollInput * speedMultiplier;
         
+        MoveSpeed = Mathf.Clamp(MoveSpeed, 0, 1);
+        MoveSpeed = Mathf.Round(MoveSpeed * 10) / 10f;
+
+        Human.SetFloat("Speed", MoveSpeed);
     }
 }
